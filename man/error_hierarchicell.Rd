@@ -15,9 +15,12 @@ error_hierarchicell(
   cells_per_control = 100,
   ncells_variation_type = "Poisson",
   pval = 0.05,
-  foldchange = 1,
   decrease_dropout = 0,
-  alter_dropout_cases = 0
+  alter_dropout_cases = 0,
+  fc_range_min = 1.1,
+  fc_range_max = 10,
+  deg_fc_interval = 0.5,
+  seed = FALSE
 )
 }
 \arguments{
@@ -35,8 +38,9 @@ single-cell data. See \code{\link{de_methods}} for more details on each of
 the methods.}
 
 \item{n_genes}{an integer. The number of genes you would like to simulate for
-your dataset. Too large of a number may cause memory failure and may slow
-the simulation down tremendously. We recommend an integer less than 40,000.
+your dataset for both differentially and non-differentially expressed genes.
+Too large of a number may cause memory failure and may slow the simulation 
+down tremendously. We recommend an integer less than 40,000.
 Defaults to 10,000.}
 
 \item{n_per_group}{an integer. The number of independent samples per
@@ -75,12 +79,6 @@ size equal to one.Defaults to "Poisson".}
 significance. Defaults to 0.05. Can also be a vector of pvalue - up to a
 length of 5.}
 
-\item{foldchange}{a number between 1 and 10. The amount of fold change to
-simulate a difference in expression between case and control groups. The
-foldchange changes genes in either direction, so a foldchange of 2  would
-cause the mean expression in cases to be either twice the amount or half the
-amount for any particular gene. Defaults to 1.}
-
 \item{decrease_dropout}{a numeric proportion between 0 and 1. The proportion
 by which you would like to simulate decreasing the amount of dropout in your
 data. For example, if you would like to simulate a decrease in the amount of
@@ -99,6 +97,32 @@ allows the user to adjust the proportion of dropout if they believe the
 stochastic expression of a gene will differ between cases and controls. For
 a two-part hurdle model, like MAST implements, this will increase your
 ability to detect differences. Defaults to 0.}
+
+\item{fc_range_min}{a number between 1 and 10. The minimum amount of fold 
+change to simulate a difference in expression between case and control 
+groups. This is used to derive the differentially expressed genes. The
+fold change changes genes in either direction, so a fold change of 2 would
+cause the mean expression in cases to be either twice the amount or half the
+amount for any particular gene. Defaults 1.1 which arguably would be hard to
+by a model since the FC difference between case and controls is so low..}
+
+\item{fc_range_max}{a number between 1 and 10. The maximum amount of fold 
+change to simulate a difference in expression between case and control 
+groups. This is used to derive the differentially expressed genes. The
+fold change changes genes in either direction, so a fold change of 2 would
+cause the mean expression in cases to be either twice the amount or half the
+amount for any particular gene. Defaults 3. n_genes will be randomly 
+sampled between fc_range_min and fc_range_max at an interval of 0.1.}
+
+\item{deg_fc_interval}{the incremental value between fc_range_min and 
+fc_range_max used to derive the number of fold change groups. This uniform 
+sampling of fold change values is used to create DEGs from a distribution 
+with the specified fold change. Default is 0.5}
+
+\item{seed}{Use this to ensure the same count datasets are generated in 
+subsequent runs, this is helpful when comparing models so we know the exact
+same dataset was used. Default False, so no seed is set. If integer value
+passed, seed is set using it.}
 }
 \value{
 The estimated error under the specified conditions when using 'MAST'
@@ -132,14 +156,4 @@ Data should be \strong{only for cells of the specific cell-type} you are
  dataset will be difficult at this time, but, over time (as experiments grow
  in sample size and the numbers of publically available single-cell RNAseq
  datasets increase), this should improve dramatically.
-}
-\examples{
-\donttest{clean_expr_data <- filter_counts()
-data_summaries <- compute_data_summaries(clean_expr_data)
-error_hierarchicell(data_summaries,
-                   n_genes = 100,
-                   n_per_group = 4,
-                   cells_per_case = 50,
-                   cells_per_control = 50)}
-
 }
