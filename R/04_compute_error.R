@@ -1719,6 +1719,15 @@ error_hierarchicell <- function(data_summaries,
         set.seed(seed)
       #cycle through fc choices
       for (fc_i in as.numeric(names(deg_groups))){
+      #Monocole somtimes fails at the following call:
+      #celldat_degs <- BiocGenerics::estimateDispersions(celldat_degs)
+      #There is no fix for this, see this thread:
+      #https://github.com/cole-trapnell-lab/monocle-release/issues/38
+      #or here:
+      #https://github.com/cole-trapnell-lab/monocle-release/issues/5
+      #having cells (or genes) with all 0 counts could cause it but that isn't
+      #happening here. Workaround is just to abondon run and keep going with 
+      #others
         degs <- 
           suppressMessages(simulate_hierarchicell(data_summaries,
                                                   n_genes = deg_groups[[as.character(fc_i)]],
@@ -1752,7 +1761,13 @@ error_hierarchicell <- function(data_summaries,
         celldat_degs <- monocle::newCellDataSet(genecounts_degs,phenoData = pheno_degs, featureData = features_degs, expressionFamily = VGAM::negbinomial.size())
         celldat_degs <- monocle::detectGenes(celldat_degs, min_expr = 0.1)
         celldat_degs <- BiocGenerics::estimateSizeFactors(celldat_degs)
-        celldat_degs <- BiocGenerics::estimateDispersions(celldat_degs)
+        estimateDisp_err<-
+          tryCatch(
+            celldat_degs <- BiocGenerics::estimateDispersions(celldat_degs),
+            error = function(e) e,
+            warning = function(w) w)
+        if(is(estimateDisp_err, "error"))
+          break
         results_degs <- monocle::differentialGeneTest(celldat_degs, fullModelFormulaStr = "~Status")
         results_degs <- stats::na.omit(results_degs)
         pvalues_degs <- as.numeric(results_degs$pval)
