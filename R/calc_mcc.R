@@ -8,8 +8,8 @@
 #' @keywords internal
 calc_mcc<-function(predicted,actual,cutoff){
     predicted<-ifelse(predicted<cutoff,1,0)
-    FP <- as.double(sum( predicted & !actual))
-    FN <- as.double(sum(!predicted &  actual))
+    FP <- as.double(sum( predicted & !actual,na.rm = TRUE))
+    FN <- as.double(sum(!predicted &  actual,na.rm = TRUE))
     act_pos <- as.double(sum(actual))
     act_neg <- as.double(length(actual)-act_pos)
     TN <- act_neg - FP
