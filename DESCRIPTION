@@ -1,6 +1,6 @@
 Package: hierarchicell
 Title: Simulating Cell-Type Specific and Hierarchical Single-Cell RNA-Seq Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person(given = "Kip",
            family = "Zimmerman",
