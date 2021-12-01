@@ -20,7 +20,9 @@ error_hierarchicell(
   fc_range_min = 1.1,
   fc_range_max = 10,
   deg_fc_interval = 0.5,
-  seed = FALSE
+  seed = FALSE,
+  checkpoint = NULL,
+  force_new = FALSE
 )
 }
 \arguments{
@@ -123,6 +125,16 @@ with the specified fold change. Default is 0.5}
 subsequent runs, this is helpful when comparing models so we know the exact
 same dataset was used. Default False, so no seed is set. If integer value
 passed, seed is set using it.}
+
+\item{checkpoint}{add location to save results at checkpoints in the code so 
+if the run is cancelled it can be pisked up where it left off. Default of 
+NULL will not save checkpoints. This becomes very useful as the number of 
+cells and number of samples increases down to mixture models' long runtime.}
+
+\item{force_new}{if checkpoint set to a folder, force_new set to TRUE will 
+rerun all the code even if a checkpoint has been saved. Default is FALSE. 
+Even if FALSE used and checkpoint saved, if new input parameters are used 
+affected parts of the function will be rerun.}
 }
 \value{
 The estimated error under the specified conditions when using 'MAST'
