@@ -236,7 +236,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
                 cells_per_control,ncells_variation_type,pval,decrease_dropout,
-                alter_dropout_cases,sep="_")
+                alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
           file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -488,7 +488,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -741,7 +741,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -994,7 +994,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -1220,7 +1220,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         
@@ -1445,7 +1445,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -1670,7 +1670,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -1887,7 +1887,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -2125,7 +2125,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -2352,7 +2352,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
               cells_per_control,ncells_variation_type,pval,decrease_dropout,
-              alter_dropout_cases,sep="_")
+              alter_dropout_cases,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
                          file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
