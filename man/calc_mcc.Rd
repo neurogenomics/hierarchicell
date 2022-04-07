@@ -15,7 +15,8 @@ calc_mcc(predicted, actual, cutoff)
 usual cut-offs. i.e. if prediciton<cut-off, it is a true prediction}
 }
 \value{
-Matthew's Correlation Co-efficient (MCC)
+Matthew's Correlation Co-efficient (MCC), Type 1 error, Type 2 error,
+raw confusion matrix values and raw values
 }
 \description{
 Efficient function to calculate Matthew's Correlation Co-efficient (MCC)

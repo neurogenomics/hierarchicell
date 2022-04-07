@@ -4,9 +4,11 @@
 #' @param actual actual values (0,1)
 #' @param cutoff cut-off for calculation, made for p-values so backwards to 
 #' usual cut-offs. i.e. if prediciton<cut-off, it is a true prediction
-#' @return Matthew's Correlation Co-efficient (MCC)
+#' @return Matthew's Correlation Co-efficient (MCC), Type 1 error, Type 2 error,
+#' raw confusion matrix values and raw values
 #' @keywords internal
 calc_mcc<-function(predicted,actual,cutoff){
+    pred <- predicted
     predicted<-ifelse(predicted<cutoff,1,0)
     FP <- as.double(sum( predicted & !actual,na.rm = TRUE))
     FN <- as.double(sum(!predicted &  actual,na.rm = TRUE))
@@ -22,5 +24,7 @@ calc_mcc<-function(predicted,actual,cutoff){
     MCC <- (TP*TN - FP*FN)/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
     if(is.na(MCC)) MCC <- 0
     #return Type 1 error as test
-    return(list("MCC"=MCC,"type_1_err"=(FP/(FP+TN))))
+    return(list("MCC"=MCC,"type_1_err"=(FP/(FP+TN)),"type_2_err"=(FN/(FN+TP)),
+                    "TP"=TP,"TN"=TN,"FP"=FP,"FN"=FN,
+                    "pred"=pred,"actual"=actual))
 }

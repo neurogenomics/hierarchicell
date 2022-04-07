@@ -368,7 +368,7 @@ error_hierarchicell <- function(data_summaries,
         
       }
       #just combine the results
-      fcHurdle_degs <- rbindlist(degs_sep_fcs,idcol="fc")
+      fcHurdle_degs <- data.table::rbindlist(degs_sep_fcs,idcol="fc")
       
       if (length(pval) == 1){
         #create actuals
@@ -618,7 +618,7 @@ error_hierarchicell <- function(data_summaries,
         
       }
       #just combine the results
-      fcHurdle_degs <- rbindlist(degs_sep_fcs,idcol="fc")
+      fcHurdle_degs <- data.table::rbindlist(degs_sep_fcs,idcol="fc")
       
       
       if (length(pval) == 1){
@@ -872,7 +872,7 @@ error_hierarchicell <- function(data_summaries,
         
       }
       #just combine the results
-      fcHurdle_degs <- rbindlist(degs_sep_fcs,idcol="fc")
+      fcHurdle_degs <- data.table::rbindlist(degs_sep_fcs,idcol="fc")
 
       if (length(pval) == 1){
         #create actuals
@@ -2387,9 +2387,11 @@ error_hierarchicell <- function(data_summaries,
   
         
         dsd_ndeg <- suppressMessages(DESeq2::DESeqDataSetFromMatrix(countData = cellsums_ndeg, colData = coldata_ndeg, design = ~ Status))
-        normFactors_ndeg <- matrix(rep(1,(nrow(dsd_ndeg)*ncol(dsd_ndeg))),ncol=ncol(dsd_ndeg),nrow=nrow(dsd_ndeg),dimnames=list(1:nrow(dsd_ndeg),1:ncol(dsd_ndeg)))
-        normFactors_ndeg <- normFactors_ndeg / exp(rowMeans(log(normFactors_ndeg)))
-        DESeq2::normalizationFactors(dsd_ndeg) <- normFactors_ndeg
+        #normFactors_ndeg <- matrix(rep(1,(nrow(dsd_ndeg)*ncol(dsd_ndeg))),ncol=ncol(dsd_ndeg),nrow=nrow(dsd_ndeg),dimnames=list(1:nrow(dsd_ndeg),1:ncol(dsd_ndeg)))
+        #normFactors_ndeg <- normFactors_ndeg / exp(rowMeans(log(normFactors_ndeg)))
+        #DESeq2::normalizationFactors(dsd_ndeg) <- normFactors_ndeg
+        #don't exclude normalisation step - now will use estimateSizeFactors() 
+        #deals w/ diff seq depth - https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106 "The purpose of the size factors..."
         dsd_ndeg <- suppressMessages(DESeq2::DESeq(dsd_ndeg))
         res_ndeg <- as.data.frame(DESeq2::results(dsd_ndeg))
         pvalues_ndeg <- as.numeric(res_ndeg$pvalue)
@@ -2449,9 +2451,11 @@ error_hierarchicell <- function(data_summaries,
           cellsums_degs <- cellsums_degs[, rownames(coldata_degs)]
           
           dsd_degs <- suppressMessages(DESeq2::DESeqDataSetFromMatrix(countData = cellsums_degs, colData = coldata_degs, design = ~ Status))
-          normFactors_degs <- matrix(rep(1,(nrow(dsd_degs)*ncol(dsd_degs))),ncol=ncol(dsd_degs),nrow=nrow(dsd_degs),dimnames=list(1:nrow(dsd_degs),1:ncol(dsd_degs)))
-          normFactors_degs <- normFactors_degs / exp(rowMeans(log(normFactors_degs)))
-          DESeq2::normalizationFactors(dsd_degs) <- normFactors_degs
+          #normFactors_degs <- matrix(rep(1,(nrow(dsd_degs)*ncol(dsd_degs))),ncol=ncol(dsd_degs),nrow=nrow(dsd_degs),dimnames=list(1:nrow(dsd_degs),1:ncol(dsd_degs)))
+          #normFactors_degs <- normFactors_degs / exp(rowMeans(log(normFactors_degs)))
+          #DESeq2::normalizationFactors(dsd_degs) <- normFactors_degs
+          #don't exclude normalisation step - now will use estimateSizeFactors() 
+          #deals w/ diff seq depth - https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106 "The purpose of the size factors..."
           dsd_degs <- suppressMessages(DESeq2::DESeq(dsd_degs))
           res_degs <- as.data.frame(DESeq2::results(dsd_degs))
           pvalues_degs <- as.numeric(res_degs$pvalue)
