@@ -9,6 +9,7 @@ error_hierarchicell(
   method = "MAST_RE",
   n_genes = 10000,
   n_per_group = 3,
+  prop_diff_genes = 1,
   n_cases = n_per_group,
   n_controls = n_per_group,
   cells_per_case = 100,
@@ -39,16 +40,15 @@ equations ("GEE1"), ROTS ("ROTS"), or Monocle ("Monocle"). Defaults to
 single-cell data. See \code{\link{de_methods}} for more details on each of
 the methods.}
 
-\item{n_genes}{an integer. The number of genes you would like to simulate for
-your dataset for both differentially and non-differentially expressed genes.
-Too large of a number may cause memory failure and may slow the simulation 
-down tremendously. We recommend an integer less than 40,000.
-Defaults to 10,000.}
-
 \item{n_per_group}{an integer. The number of independent samples per
 case/control group for simulation. Creates a balanced design, for unbalanced
 designs, specify n_cases and n_controls separately. If not specifying a
 foldchange, the number of cases and controls does not matter. Defaults to 3.}
+
+\item{prop_diff_genes}{a float. The proportion of differentially expressed 
+genes to non-differentially expressed genes to be simulated. Based on 
+n_genes_nondiff where a value of 1.0 means the same number of DEGs will be 
+simulated as non-DEGs. Default is 1.0}
 
 \item{n_cases}{an integer. The number of independent control samples for
 simulation. Defaults to n_per_group.}
@@ -135,6 +135,12 @@ cells and number of samples increases down to mixture models' long runtime.}
 rerun all the code even if a checkpoint has been saved. Default is FALSE. 
 Even if FALSE used and checkpoint saved, if new input parameters are used 
 affected parts of the function will be rerun.}
+
+\item{n_genes_nondiff}{an integer. The number of non-differentially expressed 
+genes you would like to simulate for your dataset. Too large of a number may
+cause memory failure and may slow the simulation down tremendously. We 
+recommend an integer less than 40,000.
+Defaults to 10,000.}
 }
 \value{
 The estimated error under the specified conditions when using 'MAST'

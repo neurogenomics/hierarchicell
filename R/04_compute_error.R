@@ -74,11 +74,16 @@ NULL
 #'  single-cell data. See \code{\link{de_methods}} for more details on each of
 #'  the methods.
 #'
-#'@param n_genes an integer. The number of genes you would like to simulate for
-#'  your dataset for both differentially and non-differentially expressed genes.
-#'  Too large of a number may cause memory failure and may slow the simulation 
-#'  down tremendously. We recommend an integer less than 40,000.
+#'@param n_genes_nondiff an integer. The number of non-differentially expressed 
+#'  genes you would like to simulate for your dataset. Too large of a number may
+#'  cause memory failure and may slow the simulation down tremendously. We 
+#'  recommend an integer less than 40,000.
 #'  Defaults to 10,000.
+#'  
+#'@param prop_diff_genes a float. The proportion of differentially expressed 
+#'  genes to non-differentially expressed genes to be simulated. Based on 
+#'  n_genes_nondiff where a value of 1.0 means the same number of DEGs will be 
+#'  simulated as non-DEGs. Default is 1.0
 #'
 #'@param n_per_group an integer. The number of independent samples per
 #'  case/control group for simulation. Creates a balanced design, for unbalanced
@@ -183,6 +188,7 @@ error_hierarchicell <- function(data_summaries,
                                    method = "MAST_RE",
                                    n_genes = 10000,
                                    n_per_group = 3,
+                                   prop_diff_genes = 1,
                                    n_cases = n_per_group,
                                    n_controls = n_per_group,
                                    cells_per_case = 100,
@@ -206,6 +212,13 @@ error_hierarchicell <- function(data_summaries,
     ## Remove trailing / if present
     checkpoint <- gsub("/$", "", checkpoint)
   }
+  
+  #validate input param....
+  err_msg <- paste0("Invalid prop_diff_genes should be a float indicating the ", 
+                    "proportion of DEGs to simulate\nwhen compared to non-DEGs",
+                    " (n_genes)")
+  if(!is.numeric(prop_diff_genes))
+    stop(err_msg)
   
   if (method == "MAST_RE") {
 
@@ -236,7 +249,7 @@ error_hierarchicell <- function(data_summaries,
       checkpoint_params <- 
         paste(method,n_genes,n_per_group,n_cases,n_controls,cells_per_case,
                 cells_per_control,ncells_variation_type,pval,decrease_dropout,
-                alter_dropout_cases,seed,sep="_")
+                alter_dropout_cases,prop_diff_genes,seed,sep="_")
       if(!force_new && !(!is.null(checkpoint) && 
           file.exists(paste0(checkpoint,"/","nDEG_",checkpoint_params,".rds")))){
         #if user wanted set the seed
@@ -296,8 +309,10 @@ error_hierarchicell <- function(data_summaries,
       
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -546,8 +561,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -800,8 +817,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -1039,8 +1058,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -1266,8 +1287,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -1491,8 +1514,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -1712,8 +1737,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -1937,8 +1964,10 @@ error_hierarchicell <- function(data_summaries,
       
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -2176,8 +2205,10 @@ error_hierarchicell <- function(data_summaries,
       }
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)
@@ -2406,8 +2437,10 @@ error_hierarchicell <- function(data_summaries,
       
       
       #simulate the differentially expressed genes
+      # use prop_diff_genes to decide how many genes to simulate
       deg_groups <-
-        get_deg_groups(n_genes,fc_range_min,fc_range_max,seed,deg_fc_interval)
+        get_deg_groups(as.integer(n_genes*prop_diff_genes),
+                       fc_range_min,fc_range_max,seed,deg_fc_interval)
       #separate call for each
       degs_sep_fcs <- vector(mode="list",length=length(deg_groups))
       names(degs_sep_fcs) <- names(deg_groups)

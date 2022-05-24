@@ -7,12 +7,6 @@
 get_deg_groups(n_genes, fc_range_min, fc_range_max, seed, deg_fc_interval)
 }
 \arguments{
-\item{n_genes}{an integer. The number of genes you would like to simulate for
-your dataset for both differentially and non-differentially expressed genes.
-Too large of a number may cause memory failure and may slow the simulation 
-down tremendously. We recommend an integer less than 40,000.
-Defaults to 10,000.}
-
 \item{fc_range_min}{a number between 1 and 10. The minimum amount of fold 
 change to simulate a difference in expression between case and control 
 groups. This is used to derive the differentially expressed genes. The
