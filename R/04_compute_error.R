@@ -2255,7 +2255,15 @@ error_hierarchicell <- function(data_summaries,
           normFactors_degs <- matrix(rep(1,(nrow(dsd_degs)*ncol(dsd_degs))),ncol=ncol(dsd_degs),nrow=nrow(dsd_degs),dimnames=list(1:nrow(dsd_degs),1:ncol(dsd_degs)))
           normFactors_degs <- normFactors_degs / exp(rowMeans(log(normFactors_degs)))
           DESeq2::normalizationFactors(dsd_degs) <- normFactors_degs
-          dsd_degs <- suppressMessages(DESeq2::DESeq(dsd_degs))
+          dsd_degs <-tryCatch({
+            dsd_degs <- suppressMessages(DESeq2::DESeq(dsd_degs))
+          }, error = function(error_condition) {
+            print("size factor estimation won't work properly w/ too few genes")
+            print("https://support.bioconductor.org/p/97424/")
+            print("Using fitType='mean'")
+            dsd_degs <- suppressMessages(DESeq2::DESeq(dsd_degs,fitType="mean"))
+            return(dsd_degs)
+          })
           res_degs <- as.data.frame(DESeq2::results(dsd_degs))
           pvalues_degs <- as.numeric(res_degs$pvalue)
           if(!is.null(checkpoint))
