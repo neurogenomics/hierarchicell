@@ -1,4 +1,6 @@
 # hierarchicell
+[![DOI](https://zenodo.org/badge/401829579.svg)](https://zenodo.org/badge/latestdoi/401829579)
+
 An R package for simulating cell-type specific and hierarchical single-cell 
 expression data.The hierarchicell package estimates important parameters from
 single-cell RNAseq expression counts before simulating expression data that
